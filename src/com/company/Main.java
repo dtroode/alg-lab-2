@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -10,11 +11,10 @@ public class Main {
     public static Stack<Vertex> stack = new Stack<>();
     public static ArrayList<Vertex> vertexes = null;
 
+    // Эта штука сейчас вроде работает, но выводит весь стэк, а не только ту часть, где есть петля
     public static void printStack(Stack s, Vertex w) {
-        while (!stack.peek().equals(w)) {
-            System.out.println(stack.pop().getName());
-        }
-        System.out.println("\n");
+        System.out.println(Arrays.toString(stack.stream().map((v) -> v.getName()).toArray()));
+        stack.pop();
     }
 
     public static void dfs(Graph g, Vertex v) {
@@ -22,24 +22,24 @@ public class Main {
         color.replace(v, "grey");
 
         Vertex first = vertexes.get(g.first(v));
-        if (color.get(first) == "white") dfs(g, first);
-        if (color.get(first) == "grey") printStack(stack, first);
+        if (color.get(first) != "grey") dfs(g, first);
+        else if (color.get(first) == "grey") {
+            stack.push(first);
+            printStack(stack, first);
+        }
 
         int i = 0;
         while (g.next(v, i) != -1) {
             Vertex w = vertexes.get(g.next(v, i));
-            if (color.get(w) == "white") dfs(g, w);
-            if (color.get(w) == "grey") printStack(stack, w);
+            if (color.get(w) != "grey") dfs(g, w);
+            else if (color.get(w) == "grey") {
+                stack.push(w);
+                printStack(stack, w);
+            }
             i++;
         }
 
-//        for (Vertex w : vertexes) {
-//            if (g.isNeighbors(v, w) && !w.equals(v)) {
-//                if (color.get(w) == "white") dfs(g, w);
-//                if (color.get(w) == "grey") printStack(stack);
-//            }
-//        }
-
+        stack.pop();
         color.replace(v, "black");
     }
 
@@ -50,6 +50,7 @@ public class Main {
         g.addVertex("c", 5);
         g.addVertex("d", 5);
         g.addVertex("e", 5);
+        g.addVertex("f", 5);
 
         g.addArc("a", "d", 7);
         g.addArc("a", "b", 13);
@@ -61,6 +62,10 @@ public class Main {
         g.addArc("d", "a", 8);
         g.addArc("d", "b", 2);
         g.addArc("e", "a", 8);
+        g.addArc("e", "f", 8);
+        g.addArc("f", "d", 8);
+
+        g.printMatrix();
 
         vertexes = g.getVertexes();
         for (Vertex vertex : vertexes) color.put(vertex, "white");
@@ -71,6 +76,5 @@ public class Main {
 //        g.delArc("d", "c");
 //        g.delVertex("e");
 
-//        g.printMatrix();
     }
 }
