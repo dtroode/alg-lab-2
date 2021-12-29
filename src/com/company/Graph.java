@@ -2,8 +2,6 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
 
 public class Graph {
     private int V;
@@ -33,7 +31,7 @@ public class Graph {
 
             // Если значение неравно 0, значит у нас есть дуга
             if (value == 1) {
-                // По ключу достаём вторую вершиу
+                // По ключу достаём вторую вершину
                 Vertex other = key.getOther(v);
                 // Из дополнительного массива достаём индекс
                 // Индекс формируется при добавлении вершины (добавлена позже – больше индекс)
@@ -65,7 +63,7 @@ public class Graph {
                 j++;
                 // Эта проверка покажет, является ли эта вершина нужной нам
                 if (j - 1 != i) continue;
-                // По ключу достаём вторую вершиу
+                // По ключу достаём вторую вершину
                 Vertex other = key.getOther(v);
                 // Из дополнительного массива достаём индекс
                 // Индекс формируется при добавлении вершины (добавлена позже – больше индекс)
@@ -97,7 +95,7 @@ public class Graph {
                 j++;
                 // Эта проверка покажет, является ли эта вершина нужной нам
                 if (j != i) continue;
-                // По ключу достаём вторую вершиу
+                // По ключу достаём вторую вершину
                 Vertex other = key.getOther(v);
                 return other;
             }
@@ -126,6 +124,11 @@ public class Graph {
 
     // Добавляем дугу
     public void addArc(Vertex v, Vertex w, int price) {
+        if (v == null || w == null) {
+            System.out.println("Какой-то вершины нет");
+            return;
+        }
+
         // Создаём дугу и кладём с массив дуг
         Arc a = new Arc(v, w, price);
         arcs.add(a);
@@ -138,15 +141,11 @@ public class Graph {
         }
     }
 
-    // перегруженный метод, чтоб добавлять дуги к вершинам, обращаясь к ним по именам
+    // Перегруженный метод, чтоб добавлять дуги к вершинам, обращаясь к ним по именам
     public void addArc(String vName, String wName, int price) {
-        Vertex v = null;
-        Vertex w = null;
-
-        for (Vertex vertex : vertexes) {
-            if (vertex.getName().equals(vName)) v = vertex;
-            else if (vertex.getName().equals(wName)) w = vertex;
-        }
+        Vertex[] vw = getNames(vName, wName);
+        Vertex v = vw[0];
+        Vertex w = vw[1];
 
         addArc(v, w, price);
     }
@@ -172,10 +171,13 @@ public class Graph {
             for (HashMap<Arc, Integer> value : G.values()) {
                 for (Arc key : value.keySet()) {
                     // Смотрим, находится ли данная вершина в проверяемой дуге
-                    if (key.contains(owrVertex)) value.remove(key);
-                    break;
+                    if (key.contains(owrVertex)) {
+                        value.remove(key);
+                        return;
+                    }
                 }
             }
+            System.out.println("Вершины с именем " + name + " нет");
         }
     }
 
@@ -193,21 +195,20 @@ public class Graph {
         for (HashMap<Arc, Integer> value : G.values()) {
             for (Arc key : value.keySet()) {
                 // Смотрим, находятся ли обе вершины в проверяемой дуге
-                if (key.contains(v) && key.contains(w)) value.remove(key);
-                break;
+                if (key.contains(v) && key.contains(w)) {
+                    value.remove(key);
+                    return;
+                }
             }
         }
+        System.out.println("(" + v.getName() + ", " + w.getName() + "): " + "такой дуги нет");
     }
 
     // Перегруженный метод для удаления дуги по именам вершин
     public void delArc(String vName, String wName) {
-        Vertex v = null;
-        Vertex w = null;
-
-        for (Vertex vertex : vertexes) {
-            if (vertex.getName().equals(vName)) v = vertex;
-            else if (vertex.getName().equals(wName)) w = vertex;
-        }
+        Vertex[] vw = getNames(vName, wName);
+        Vertex v = vw[0];
+        Vertex w = vw[1];
 
         delArc(v, w);
     }
@@ -217,9 +218,10 @@ public class Graph {
         for (Vertex vertex : vertexes) {
             if (vertex.getName().equals(name)) {
                 vertex.setMark(mark);
+                return;
             }
-            break;
         }
+        System.out.println("Вершины с именем " + name + " нет");
     }
 
     // Меняем вес дуги
@@ -227,13 +229,23 @@ public class Graph {
         for (Arc arc : arcs) {
             if (arc.contains(v) && arc.contains(w)) {
                 arc.setPrice(price);
+                return;
             }
-            break;
         }
+        System.out.println("(" + v.getName() + ", " + w.getName() + "): " + "такой дуги нет");
     }
 
     // Перегруженный метод для редактирования дуги по именам вершин
     public void editArc(String vName, String wName, int price) {
+        Vertex[] vw = getNames(vName, wName);
+        Vertex v = vw[0];
+        Vertex w = vw[1];
+
+        editArc(v, w, price);
+    }
+
+    // Метод для получения вершин по именам
+    public Vertex[] getNames(String vName, String wName) {
         Vertex v = null;
         Vertex w = null;
 
@@ -241,8 +253,11 @@ public class Graph {
             if (vertex.getName().equals(vName)) v = vertex;
             else if (vertex.getName().equals(wName)) w = vertex;
         }
+
+        return new Vertex[]{v, w};
     }
 
+    // Проверка являются ли вершины соседями
     public Boolean isNeighbors(Vertex v, Vertex w) {
         for (Arc arc : arcs) {
             if (arc.contains(v) && arc.contains(w)) {
