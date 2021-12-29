@@ -66,5 +66,30 @@ public class Main {
     }
 
     public static void main(String[] args) {
+//        Пример для проверки
+//        Graph g = new Graph();
+//        g.addVertex("a", 5);
+//        g.addVertex("b", 5);
+//        g.addVertex("c", 5);
+//        g.addVertex("d", 5);
+//        g.addVertex("e", 5);
+//
+//        g.addArc("a", "d", 7);
+//        g.addArc("a", "b", 13);
+//        g.addArc("b", "c", 2);
+//        g.addArc("c", "a", 3);
+//        g.addArc("c", "e", 3);
+//        g.addArc("d", "c", 5);
+//        g.addArc("d", "e", 9);
+//        g.addArc("d", "a", 8);
+//        g.addArc("d", "b", 2);
+//        g.addArc("e", "a", 8);
+
+//        g.printMatrix();
+
+//        vertexes = g.getVertexes();
+//        for (Vertex vertex : vertexes) color.put(vertex, "white");
+//
+//        for (Vertex vertex : vertexes) dfs(g, vertex);
     }
 }

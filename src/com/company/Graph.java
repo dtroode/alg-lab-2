@@ -269,13 +269,21 @@ public class Graph {
 
     // Метод для вывода всей матрицы
     public void printMatrix() {
+        // Шапка таблицы
+        String arcNames = "";
+        for (Arc arc : arcs) {
+            arcNames += "\t(" + arc.getFirst().getName()
+                    + ", " + arc.getSecond().getName() + ")";
+        }
+        System.out.println(arcNames);
+
         for (Vertex vertex : vertexes) {
             String vertexName = vertex.getName();
 
             String connections = "" ;
 
             for (Arc arc : arcs) {
-                connections += "\t" + G.get(vertex).get(arc).toString();
+                connections += "\t\t" + G.get(vertex).get(arc).toString();
             }
 
             System.out.println(vertexName + connections);
