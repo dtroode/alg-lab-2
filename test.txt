@@ -1,0 +1,57 @@
+Код для тестирования алгоритма
+
+Граф 1
+g.addVertex("1", 0);
+g.addVertex("2", 0);
+g.addVertex("3", 0);
+g.addVertex("4", 0);
+g.addVertex("5", 0);
+g.addVertex("6", 0);
+g.addVertex("7", 0);
+g.addVertex("8", 0);
+g.addVertex("9", 0);
+g.addVertex("10", 0);
+g.addVertex("11", 0);
+g.addVertex("12", 0);
+g.addVertex("13", 0);
+
+g.addArc("5", "3", 1);
+g.addArc("3", "4", 1);
+g.addArc("4", "3", 1);
+g.addArc("1", "7", 1);
+g.addArc("1", "2", 1);
+g.addArc("3", "1", 1);
+g.addArc("12", "13", 1);
+g.addArc("13", "10", 1);
+g.addArc("10", "11", 1);
+g.addArc("10", "12", 1);
+g.addArc("9", "10", 1);
+g.addArc("11", "13", 1);
+g.addArc("5", "12", 1);
+g.addArc("5", "4", 1);
+g.addArc("4", "6", 1);
+g.addArc("8", "9", 1);
+g.addArc("9", "8", 1);
+g.addArc("6", "5", 1);
+g.addArc("1", "6", 1);
+g.addArc("7", "5", 1);
+g.addArc("7", "10", 1);
+g.addArc("8", "7", 1);
+
+Граф 2
+g.addVertex("a", 5);
+g.addVertex("b", 5);
+g.addVertex("c", 5);
+g.addVertex("d", 5);
+g.addVertex("e", 5);
+
+g.addArc("a", "d", 7);
+g.addArc("a", "b", 13);
+g.addArc("b", "c", 2);
+g.addArc("c", "a", 3);
+g.addArc("c", "e", 3);
+g.addArc("d", "c", 5);
+g.addArc("d", "e", 9);
+g.addArc("d", "a", 8);
+g.addArc("d", "b", 2);
+g.addArc("e", "a", 8);
